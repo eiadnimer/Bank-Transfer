@@ -2,8 +2,10 @@ package org.example;
 
 import org.example.core.Bank;
 import org.example.core.Customer;
+import org.example.core.NotificationType;
 import org.example.core.StatusTypes;
 import org.example.exeprions.CustomerNotExist;
+import org.example.exeprions.FieldMustBeNotEmpty;
 import org.example.exeprions.UnActiveAccount;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,33 +16,21 @@ public class BankTest {
     private final Bank bank = new Bank(notificationFactory);
 
     @Test
-    public void if_customer_name_equal_null_return_false() {
-        Customer customer = bank.openAccount("eiad", "0797357845", "eiadnimer_swaidat@yahoo.com");
-
-        String name = customer.getName();
-
-        Assertions.assertEquals("eiad", name);
-        Assertions.assertTrue(notificationFactory.getNotification().isCalled());
+    public void if_customer_name_equal_null_or_empty_should_fail() {
+        Assertions.assertThrows(FieldMustBeNotEmpty.class,
+                () -> bank.openAccount(null, "0797357845", "eiadnimer_swaidat@yahoo.com"));
     }
 
     @Test
-    public void if_customer_mobile_equal_null_return_false() {
-        Customer customer = bank.openAccount("eiad", "0797357845", "eiadnimer_swaidat@yahoo.com");
-
-        String mobile = customer.getMobile();
-
-        Assertions.assertEquals("0797357845", mobile);
-        Assertions.assertTrue(notificationFactory.getNotification().isCalled());
+    public void if_customer_mobile_equal_null_or_empty_should_fail() {
+        Assertions.assertThrows(FieldMustBeNotEmpty.class,
+                () -> bank.openAccount("eiad", null, "eiadnimer_swaidat@yahoo.com"));
     }
 
     @Test
-    public void if_customer_emil_equal_null_return_false() {
-        Customer customer = bank.openAccount("eiad", "0797357845", "eiadnimer_swaidat@yahoo.com");
-
-        String emil = customer.getEmil();
-
-        Assertions.assertEquals("eiadnimer_swaidat@yahoo.com", emil);
-        Assertions.assertTrue(notificationFactory.getNotification().isCalled());
+    public void if_customer_emil_equal_null_or_empty_return_false() {
+        Assertions.assertThrows(FieldMustBeNotEmpty.class,
+                () -> bank.openAccount("eiad", "0797357845", ""));
     }
 
     @Test
@@ -76,7 +66,7 @@ public class BankTest {
     }
 
     @Test
-    public void an_default_notification_should_send_to_the_customer_after_he_opens_an_account() {
+    public void a_default_notification_should_send_to_the_customer_after_he_opens_an_account() {
         bank.openAccount("eiad", "0797357845", "eiadnimer_swaidat@yahoo.com");
 
         boolean notificationWasSent = notificationFactory.getNotification().isCalled();
@@ -94,6 +84,8 @@ public class BankTest {
         Assertions.assertTrue(notificationFactory.getNotification().isCalled());
     }
 
+
+
     @Test
     public void the_customer_can_change_his_status_from_the_bank() {
         Customer customer = bank.openAccount("eiad", "0797357845", "eiadnimer_swaidat@yahoo.com");
@@ -104,6 +96,15 @@ public class BankTest {
 
         Assertions.assertNotEquals(status, StatusTypes.UnACTIVE);
         Assertions.assertTrue(notificationFactory.getNotification().isCalled());
+    }
+
+    @Test
+    public void customer_can_change_his_notificationType_from_the_bank(){
+        Customer customer = bank.openAccount("eiad", "0797357845", "eiadnimer_swaidat@yahoo.com");
+        int accountNumber = customer.getAccountNumber();
+
+        bank.changeNotification(accountNumber, NotificationType.SMS);
+        Assertions.assertEquals(NotificationType.SMS,customer.getNotificationType());
     }
 
 

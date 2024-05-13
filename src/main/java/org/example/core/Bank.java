@@ -6,25 +6,29 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Bank {
+
     private final Map<Integer, Customer> customers = new HashMap<>();
-
     private final NotificationFactory notificationFactory;
-
     public Bank(NotificationFactory notificationFactory) {
         this.notificationFactory = notificationFactory;
     }
 
     public Customer openAccount(String name, String mobile, String emil) {
+        int accountNumber = getAccountNumber();
+        Customer customer = new Customer(name, mobile, emil, 0, accountNumber, StatusTypes.ACTIVE);
+        customers.put(accountNumber, customer);
+        sendNotification(customer);
+        return customer;
+    }
+
+    private int getAccountNumber() {
         int accountNumber = 0;
         if (customers.isEmpty()) {
             accountNumber = 1;
         } else {
             accountNumber = accountNumber + customers.size() + 1;
         }
-        Customer customer = new Customer(name, mobile, emil, 0, accountNumber, StatusTypes.ACTIVE);
-        customers.put(accountNumber, customer);
-        sendNotification(customer);
-        return customer;
+        return accountNumber;
     }
 
     private void sendNotification(Customer customer) {

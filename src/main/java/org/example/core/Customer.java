@@ -1,6 +1,7 @@
 package org.example.core;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.exeprions.FieldMustBeNotEmpty;
 import org.example.exeprions.NumberIsMinus;
 
 import java.util.Objects;
@@ -17,16 +18,16 @@ public class Customer {
     private NotificationType notificationType = NotificationType.EMAIL;
 
     public Customer(String name, String mobile, String emil, int balance, int accountNumber, StatusTypes status) {
-        if (name == null) {
-            throw new IllegalArgumentException("Name must be filled");
+        if (name == null || name.isEmpty()) {
+            throw new FieldMustBeNotEmpty();
         }
         this.name = name;
-        if (mobile == null) {
-            throw new IllegalArgumentException("Mobile must be filled");
+        if (mobile == null || mobile.isEmpty()) {
+            throw new FieldMustBeNotEmpty();
         }
         this.mobile = mobile;
-        if (emil == null) {
-            throw new IllegalArgumentException("Emil must be filled");
+        if (emil == null || emil.isEmpty()) {
+            throw new FieldMustBeNotEmpty();
         }
         this.emil = emil;
         if (balance < 0) {
@@ -38,7 +39,7 @@ public class Customer {
         }
         this.accountNumber = accountNumber;
         if (status == null) {
-            throw new IllegalArgumentException("Status must be filled");
+            throw new FieldMustBeNotEmpty();
         }
         this.status = status;
     }
@@ -77,4 +78,5 @@ public class Customer {
     public String toString() {
         return name;
     }
+
 }
