@@ -1,6 +1,6 @@
 package org.example.customerBuilder;
 import org.example.core.Customer;
-import org.example.core.NotificationType;
+import org.example.core.notification.NotificationType;
 import org.example.core.StatusTypes;
 
 public class CustomerBuilder implements HasMobile, HasEmil, HasBalance, HasAccountNumber ,HasStatus,HasNotification,CanBuild{

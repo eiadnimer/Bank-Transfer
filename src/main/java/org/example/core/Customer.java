@@ -1,6 +1,7 @@
 package org.example.core;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.core.notification.NotificationType;
 import org.example.exeprions.FieldMustBeNotEmpty;
 import org.example.exeprions.NumberIsMinus;
 
@@ -17,7 +18,8 @@ public class Customer {
     private StatusTypes status;
     private NotificationType notificationType = NotificationType.EMAIL;
 
-    public Customer(String name, String mobile, String emil, int balance, int accountNumber, StatusTypes status) {
+    public Customer(String name, String mobile, String emil, int balance,
+                    int accountNumber, StatusTypes status) {
         if (name == null || name.isEmpty()) {
             throw new FieldMustBeNotEmpty();
         }
@@ -78,5 +80,4 @@ public class Customer {
     public String toString() {
         return name;
     }
-
 }

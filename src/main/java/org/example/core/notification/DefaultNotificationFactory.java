@@ -1,4 +1,6 @@
-package org.example.core;
+package org.example.core.notification;
+
+import org.example.core.Customer;
 
 public class DefaultNotificationFactory implements NotificationFactory{
     @Override

@@ -1,7 +1,7 @@
 package org.example;
 
 import org.example.core.Customer;
-import org.example.core.Notification;
+import org.example.core.notification.Notification;
 
 public class MockNotification implements Notification {
     private boolean isCalled;
